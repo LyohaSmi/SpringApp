@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-refresh-tokens-table
+      author: task_manager
+      changes:
+        - createTable:
+            tableName: refresh_tokens
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_refresh_token_user
+                    references: users(id)
+                    onDelete: CASCADE
+              - column:
+                  name: token
+                  type: VARCHAR(500)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: revoked
+                  type: BOOLEAN
+                  defaultValue: false
+
+        - createIndex:
+            tableName: refresh_tokens
+            indexName: idx_refresh_tokens_user_id
+            columns:
+              - column:
+                  name: user_id
+                  descending: false
+
+        - createIndex:
+            tableName: refresh_tokens
+            indexName: idx_refresh_tokens_token
+            columns:
+              - column:
+                  name: token
+                  descending: false
+
+        - createIndex:
+            tableName: refresh_tokens
+            indexName: idx_refresh_tokens_expires_at
+            columns:
+              - column:
+                  name: expires_at
+                  descending: false

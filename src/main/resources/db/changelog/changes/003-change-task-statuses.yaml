@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-change-task-statuses
+      author: task_manager
+      changes:
+        # 1. Добавляем временную колонку с новыми статусами
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: status_new
+                  type: VARCHAR(20)
+                  defaultValue: TODO
+
+        # 2. Копируем и преобразуем старые статусы в новые
+        - update:
+            tableName: tasks
+            where: "status = 'PENDING' OR status = 'CANCELLED'"
+            columns:
+              - column:
+                  name: status_new
+                  value: TODO
+
+        - update:
+            tableName: tasks
+            where: "status = 'IN_PROGRESS'"
+            columns:
+              - column:
+                  name: status_new
+                  value: IN_PROGRESS
+
+        - update:
+            tableName: tasks
+            where: "status = 'COMPLETED'"
+            columns:
+              - column:
+                  name: status_new
+                  value: DONE
+
+        # 3. Удаляем старую колонку
+        - dropColumn:
+            tableName: tasks
+            columnName: status
+
+        # 4. Переименовываем новую колонку
+        - renameColumn:
+            tableName: tasks
+            oldColumnName: status_new
+            newColumnName: status
+            columnDataType: VARCHAR(20)

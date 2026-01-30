@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-initial-data
+      author: task_manager
+      changes:
+        # Пользователи (оставляем как есть)
+        - sql:
+            sql: INSERT INTO users (username, email, password, role) VALUES
+              ('admin', 'admin@example.com', '$2a$10$rYL7wfgQ2vY6HJ5f6PIKsOZj0pWa9s2Hf0PN4/AxkiS3GcNe4WFW6', 'ADMIN'),
+              ('user1', 'user1@example.com', '$2a$10$rYL7wfgQ2vY6HJ5f6PIKsOZj0pWa9s2Hf0PN4/AxkiS3GcNe4WFW6', 'USER'),
+              ('user2', 'user2@example.com', '$2a$10$rYL7wfgQ2vY6HJ5f6PIKsOZj0pWa9s2Hf0PN4/AxkiS3GcNe4WFW6', 'USER')
+              ON CONFLICT DO NOTHING;
+
+        # Задачи с новыми статусами
+        - sql:
+            sql: INSERT INTO tasks (title, description, status, deadline, user_id) VALUES
+              ('Задача 1 пользователя 1', 'Описание задачи 1', 'TODO', '2024-12-31 23:59:59', (SELECT id FROM users WHERE username = 'user1')),
+              ('Задача 2 пользователя 1', 'Описание задачи 2', 'IN_PROGRESS', '2024-11-30 18:00:00', (SELECT id FROM users WHERE username = 'user1')),
+              ('Задача 1 пользователя 2', 'Первая задача второго пользователя', 'DONE', '2024-10-15 12:00:00', (SELECT id FROM users WHERE username = 'user2')),
+              ('Задача 2 пользователя 2', 'Вторая задача', 'TODO', '2024-12-01 09:30:00', (SELECT id FROM users WHERE username = 'user2')),
+              ('Задача 3 пользователя 2', 'Третья важная задача', 'IN_PROGRESS', '2024-11-20 17:45:00', (SELECT id FROM users WHERE username = 'user2'))
+              ON CONFLICT DO NOTHING;
