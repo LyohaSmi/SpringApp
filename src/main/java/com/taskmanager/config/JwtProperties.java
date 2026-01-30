@@ -10,10 +10,9 @@ import org.springframework.stereotype.Component;
 public class JwtProperties {
 
     private String secretKey;
-    private long accessTokenExpiration;    // в миллисекундах
-    private long refreshTokenExpiration;   // в миллисекундах
+    private long accessTokenExpiration;
+    private long refreshTokenExpiration;
 
-    // Геттеры для удобства
     public long getAccessTokenExpirationInSeconds() {
         return accessTokenExpiration / 1000;
     }

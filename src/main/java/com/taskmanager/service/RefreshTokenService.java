@@ -3,7 +3,6 @@ package com.taskmanager.service;
 import com.taskmanager.model.RefreshToken;
 import com.taskmanager.model.User;
 import com.taskmanager.repository.RefreshTokenRepository;
-import com.taskmanager.security.JwtService;
 import com.taskmanager.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final JwtService jwtService;
 
     @Value("${application.security.jwt.refresh-token-expiration}")
     private long refreshTokenExpirationMs;
@@ -31,9 +29,6 @@ public class RefreshTokenService {
                 .email(userDetails.getEmail())
                 .password(userDetails.getPassword())
                 .build();
-
-        // Отзываем старые refresh токены (опционально - можно оставить)
-        // revokeAllUserRefreshTokens(userDetails.getId());
 
         String token = UUID.randomUUID().toString();
         LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(refreshTokenExpirationMs / 1000);
@@ -56,15 +51,5 @@ public class RefreshTokenService {
                     refreshToken.setRevoked(true);
                     refreshTokenRepository.save(refreshToken);
                 });
-    }
-
-    @Transactional
-    public void revokeAllUserRefreshTokens(Long userId) {
-        refreshTokenRepository.revokeAllByUserId(userId);
-    }
-
-    @Transactional
-    public void deleteExpiredRefreshTokens() {
-        refreshTokenRepository.deleteAllExpiredSince(LocalDateTime.now());
     }
 }

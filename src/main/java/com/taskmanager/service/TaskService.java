@@ -50,15 +50,15 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAllWithUser();  // Используем новый метод
+        return taskRepository.findAllWithUser();
     }
 
     public List<Task> getTasksByStatus(TaskStatus status) {
-        return taskRepository.findByStatusWithUser(status);  // Используем новый метод
+        return taskRepository.findByStatusWithUser(status);
     }
 
     public List<Task> getTasksByUserIdAndStatus(Long userId, TaskStatus status) {
-        return taskRepository.findByUserIdAndStatusWithUser(userId, status);  // Используем новый метод
+        return taskRepository.findByUserIdAndStatusWithUser(userId, status);
     }
 
     @Transactional

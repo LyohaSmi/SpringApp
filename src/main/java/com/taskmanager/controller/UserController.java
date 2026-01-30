@@ -47,8 +47,6 @@ public class UserController {
         }
     }
 
-    // ============== АДМИНСКИЕ ENDPOINTS ==============
-
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponse>> getAllUsers() {

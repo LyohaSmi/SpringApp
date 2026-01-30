@@ -1,9 +1,9 @@
 package com.taskmanager.model;
 
 public enum TaskStatus {
-    TODO("To Do"),           // все задачи, которые нужно сделать
-    IN_PROGRESS("In Progress"), // задачи, над которыми вы сейчас работаете
-    DONE("Done");           // выполненные задачи
+    TODO("To Do"),
+    IN_PROGRESS("In Progress"),
+    DONE("Done");
 
     private final String displayName;
 

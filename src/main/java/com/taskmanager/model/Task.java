@@ -23,7 +23,7 @@ public class Task {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TaskStatus status = TaskStatus.TODO;  // МЕНЯЕМ ЗДЕСЬ!
+    private TaskStatus status = TaskStatus.TODO;
 
     @Column(nullable = false)
     private LocalDateTime deadline;

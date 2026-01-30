@@ -1,7 +1,6 @@
 package com.taskmanager.controller;
 
 import com.taskmanager.dto.request.TaskRequest;
-import com.taskmanager.dto.request.TaskUpdateRequest;
 import com.taskmanager.dto.response.TaskResponse;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.model.Task;
@@ -25,7 +24,6 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    // ============== CREATE ==============
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or #request.userId == authentication.principal.id")
     public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest request) {
@@ -46,7 +44,6 @@ public class TaskController {
         }
     }
 
-    // ============== READ ==============
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<?> getUserTasks(@PathVariable Long userId) {
@@ -95,7 +92,6 @@ public class TaskController {
         return ResponseEntity.ok(responses);
     }
 
-    // ============== UPDATE ==============
     @PutMapping("/{taskId}")
     @PreAuthorize("hasRole('ADMIN') or @taskSecurityService.isTaskOwner(#taskId, authentication.principal.id)")
     public ResponseEntity<?> updateTask(
@@ -149,7 +145,6 @@ public class TaskController {
         }
     }
 
-    // ============== DELETE ==============
     @DeleteMapping("/{taskId}")
     @PreAuthorize("hasRole('ADMIN') or @taskSecurityService.isTaskOwner(#taskId, authentication.principal.id)")
     public ResponseEntity<?> deleteTask(@PathVariable Long taskId) {

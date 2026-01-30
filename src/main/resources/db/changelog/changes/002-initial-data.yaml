@@ -3,7 +3,6 @@ databaseChangeLog:
       id: 002-insert-initial-data
       author: task_manager
       changes:
-        # Пользователи (оставляем как есть)
         - sql:
             sql: INSERT INTO users (username, email, password, role) VALUES
               ('admin', 'admin@example.com', '$2a$10$rYL7wfgQ2vY6HJ5f6PIKsOZj0pWa9s2Hf0PN4/AxkiS3GcNe4WFW6', 'ADMIN'),
@@ -11,7 +10,6 @@ databaseChangeLog:
               ('user2', 'user2@example.com', '$2a$10$rYL7wfgQ2vY6HJ5f6PIKsOZj0pWa9s2Hf0PN4/AxkiS3GcNe4WFW6', 'USER')
               ON CONFLICT DO NOTHING;
 
-        # Задачи с новыми статусами
         - sql:
             sql: INSERT INTO tasks (title, description, status, deadline, user_id) VALUES
               ('Задача 1 пользователя 1', 'Описание задачи 1', 'TODO', '2024-12-31 23:59:59', (SELECT id FROM users WHERE username = 'user1')),

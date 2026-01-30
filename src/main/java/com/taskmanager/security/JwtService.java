@@ -30,10 +30,6 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Long extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("userId", Long.class));
-    }
-
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -110,9 +106,5 @@ public class JwtService {
 
     public long getAccessTokenExpirationInSeconds() {
         return jwtProperties.getAccessTokenExpirationInSeconds();
-    }
-
-    public long getRefreshTokenExpirationInSeconds() {
-        return jwtProperties.getRefreshTokenExpirationInSeconds();
     }
 }

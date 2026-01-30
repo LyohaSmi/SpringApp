@@ -3,7 +3,6 @@ databaseChangeLog:
       id: 003-change-task-statuses
       author: task_manager
       changes:
-        # 1. Добавляем временную колонку с новыми статусами
         - addColumn:
             tableName: tasks
             columns:
@@ -12,7 +11,6 @@ databaseChangeLog:
                   type: VARCHAR(20)
                   defaultValue: TODO
 
-        # 2. Копируем и преобразуем старые статусы в новые
         - update:
             tableName: tasks
             where: "status = 'PENDING' OR status = 'CANCELLED'"
@@ -37,12 +35,10 @@ databaseChangeLog:
                   name: status_new
                   value: DONE
 
-        # 3. Удаляем старую колонку
         - dropColumn:
             tableName: tasks
             columnName: status
 
-        # 4. Переименовываем новую колонку
         - renameColumn:
             tableName: tasks
             oldColumnName: status_new
